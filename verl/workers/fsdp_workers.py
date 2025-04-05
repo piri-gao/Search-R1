@@ -136,6 +136,7 @@ class ActorRolloutRefWorker(Worker):
             torch_dtype = PrecisionType.to_dtype(torch_dtype)
 
         # override model kwargs
+        print(f'In fsdp_worker actor_model_config, local path is: {local_path}')
         actor_model_config = AutoConfig.from_pretrained(local_path, trust_remote_code=trust_remote_code)
 
         if use_remove_padding:
@@ -161,6 +162,7 @@ class ActorRolloutRefWorker(Worker):
 
         with init_context(), warnings.catch_warnings():
             warnings.simplefilter("ignore")
+            print(f'In fsdp_worker actor, local path is: {local_path}')
             actor_module = AutoModelForCausalLM.from_pretrained(pretrained_model_name_or_path=local_path,
                                                                 torch_dtype=torch_dtype,
                                                                 config=actor_model_config,
@@ -600,6 +602,7 @@ class CriticWorker(Worker):
         from torch import nn
 
         trust_remote_code = False
+        print(f'In fsdp_worker critic config, local path is: {local_path}')
         critic_model_config = AutoConfig.from_pretrained(local_path, trust_remote_code=trust_remote_code)
         critic_model_config.num_labels = 1
 
@@ -617,6 +620,7 @@ class CriticWorker(Worker):
             warnings.simplefilter("ignore")
             setattr(critic_model_config, 'classifier_dropout', 0.)
             setattr(critic_model_config, 'hidden_dropout', '0')
+            print(f'In fsdp_worker critic, local path is: {local_path}')
             critic_module = AutoModelForTokenClassification.from_pretrained(pretrained_model_name_or_path=local_path,
                                                                             torch_dtype=torch_dtype,
                                                                             config=critic_model_config,
@@ -839,6 +843,7 @@ class RewardModelWorker(Worker):
             self.tokenizer = hf_tokenizer(local_path, trust_remote_code=config.model.get('trust_remote_code', False))
 
         trust_remote_code = config.model.get('trust_remote_code', False)
+        print(f'In fsdp_worker config, local path is: {local_path}')
         model_config = AutoConfig.from_pretrained(local_path, trust_remote_code=trust_remote_code)
         model_config.num_labels = 1
 
@@ -857,6 +862,7 @@ class RewardModelWorker(Worker):
         with init_context(), warnings.catch_warnings():
             warnings.simplefilter("ignore")
             setattr(model_config, 'classifier_dropout', 0.)
+            print(f'In fsdp_worker model, local path is: {local_path}')
             reward_module = AutoModelForTokenClassification.from_pretrained(pretrained_model_name_or_path=local_path,
                                                                             config=model_config,
                                                                             torch_dtype=torch.bfloat16,

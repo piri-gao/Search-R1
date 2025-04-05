@@ -17,6 +17,8 @@ Note that we don't combine the main with ray_trainer as ray_trainer is used by o
 
 from verl import DataProto
 import torch
+
+from verl.utils.model import print_model_size
 from verl.utils.reward_score import qa_em
 from verl.trainer.ppo.ray_trainer import RayPPOTrainer
 import re
@@ -124,6 +126,7 @@ def main_task(config):
     # env_class = ENV_CLASS_MAPPING[config.env.name]
 
     # download the checkpoint from hdfs
+    print('Model path:', config.actor_rollout_ref.model.path)
     local_path = copy_local_path_from_hdfs(config.actor_rollout_ref.model.path)
 
     # instantiate tokenizer
@@ -199,4 +202,5 @@ def main_task(config):
 
 
 if __name__ == '__main__':
+    print("Enter main.")
     main()

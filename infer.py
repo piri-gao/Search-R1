@@ -24,6 +24,7 @@ You can search as many times as your want. \
 If you find no further external knowledge needed, you can directly provide the answer inside <answer> and </answer>, without detailed illustrations. For example, <answer> Beijing </answer>. Question: {question}\n"""
 
 # Initialize the tokenizer and model
+print("Download model:", model_id)
 tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
 model = transformers.AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16, device_map="auto")
 

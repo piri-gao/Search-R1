@@ -222,6 +222,26 @@ class DenseRetriever(BaseRetriever):
             co.useFloat16 = True
             co.shard = True
             self.index = faiss.index_cpu_to_all_gpus(self.index, co=co)
+        # if config.faiss_gpu:
+        #     # 仅使用 cuda:0 和 cuda:1
+        #     gpu_ids = [0, 1]
+        #     gpu_res = []
+        #     for gid in gpu_ids:
+        #         res = faiss.StandardGpuResources()
+        #         res.noTempMemory()  # 避免大块显存预分配
+        #         gpu_res.append(res)
+        #
+        #     # 设置 GPU clone 选项
+        #     co = faiss.GpuMultipleClonerOptions()
+        #     co.useFloat16 = True
+        #     co.shard = True  # 每张卡只存一部分索引
+        #
+        #     # 手动指定多卡分布（只用卡0和1）
+        #     self.index = faiss.index_cpu_to_multiple_gpus(
+        #         self.index,
+        #         gpu_res,
+        #         co
+        #     )
 
         self.corpus = load_corpus(self.corpus_path)
         self.encoder = Encoder(

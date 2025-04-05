@@ -31,6 +31,8 @@ from collections import defaultdict
 import numpy as np
 from codetiming import Timer
 from omegaconf import OmegaConf, open_dict
+
+# from infer import prompt
 from verl import DataProto
 from verl.protocol import pad_dataproto_to_divisor, unpad_dataproto
 from verl.single_controller.base import Worker
@@ -41,6 +43,7 @@ from verl.utils.seqlen_balancing import get_seqlen_balanced_partitions, log_seql
 
 import re
 from search_r1.llm_agent.generation import LLMGenerationManager, GenerationConfig
+import time
 
 WorkerType = Type[Worker]
 
@@ -691,10 +694,16 @@ class RayPPOTrainer(object):
             config=gen_config,
         )
 
+        current_time = None
         # start training loop
         for epoch in range(self.config.trainer.total_epochs):
             for batch_dict in self.train_dataloader:
                 print(f'epoch {epoch}, step {self.global_steps}')
+                if current_time:
+                    print(f'The last step using:', time.time() - current_time, 's')
+                    current_time = time.time()
+                else:
+                    current_time = time.time()
                 metrics = {}
                 timing_raw = {}
 
