@@ -76,7 +76,7 @@ class EMRewardManager():
                 already_print_data_sources[data_source] += 1
                 print(sequences_str)
 
-            reward_extra_info = ''
+            reward_extra_info = {'Placeholder':None}
             if return_dict:
                 return {
                     "reward_tensor": reward_tensor,
