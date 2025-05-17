@@ -1,7 +1,7 @@
 export CUDA_VISIBLE_DEVICES=2,3
 export TRANSFORMERS_OFFLINE=0
 export DATA_DIR='data/nq_search'
-
+export PYTHONUNBUFFERED=1
 WAND_PROJECT='Search-R1'
 
 # export BASE_MODEL='meta-llama/Llama-3.2-3B-Instruct'
@@ -94,7 +94,7 @@ export VLLM_ATTENTION_BACKEND=XFORMERS # vllm + qwen2-7b with flash_attn has som
 #    retriever.topk=3 \
 #    2>&1 | tee $EXPERIMENT_NAME.log
 # nohup env
-nohup env PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
+nohup python3 -m verl.trainer.main_ppo \
     data.train_files=$DATA_DIR/train.parquet \
     data.val_files=$DATA_DIR/test.parquet \
     data.train_data_num=null \
@@ -131,7 +131,7 @@ nohup env PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     critic.optim.lr_warmup_steps_ratio=0.05 \
     critic.model.path=$BASE_MODEL \
     critic.model.enable_gradient_checkpointing=true \
-    critic.ppo_micro_batch_size=2 \
+    critic.ppo_micro_batch_size=8 \
     critic.model.fsdp_config.param_offload=true \
     critic.model.fsdp_config.grad_offload=true \
     critic.model.fsdp_config.optimizer_offload=true \
