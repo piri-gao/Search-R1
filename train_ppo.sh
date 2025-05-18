@@ -111,7 +111,7 @@ nohup python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.enable_gradient_checkpointing=true \
     actor_rollout_ref.model.use_remove_padding=True \
-    actor_rollout_ref.actor.optim.lr_warmup_steps_ratio=0.95 \
+    actor_rollout_ref.actor.optim.lr_warmup_steps_ratio=0.285 \
     actor_rollout_ref.actor.ppo_mini_batch_size=256 \
     actor_rollout_ref.actor.ppo_micro_batch_size=64 \
     actor_rollout_ref.actor.fsdp_config.param_offload=true \
@@ -128,7 +128,7 @@ nohup python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.actor.state_masking=true \
     critic.optim.lr=1e-5 \
     critic.model.use_remove_padding=True \
-    critic.optim.lr_warmup_steps_ratio=0.05 \
+    critic.optim.lr_warmup_steps_ratio=0.015 \
     critic.model.path=$BASE_MODEL \
     critic.model.enable_gradient_checkpointing=true \
     critic.ppo_micro_batch_size=8 \
@@ -149,7 +149,7 @@ nohup python3 -m verl.trainer.main_ppo \
     trainer.project_name=$WAND_PROJECT \
     trainer.experiment_name=$EXPERIMENT_NAME \
     trainer.total_epochs=15 \
-    trainer.total_training_steps=305 \
+    trainer.total_training_steps=1005 \
     trainer.default_hdfs_dir=null \
     trainer.default_local_dir=verl_checkpoints/$EXPERIMENT_NAME \
     max_turns=2 \
